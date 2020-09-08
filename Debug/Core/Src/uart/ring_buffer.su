@@ -1,0 +1,12 @@
+ring_buffer.c:21:15:circular_buf_init	24	static
+ring_buffer.c:37:6:circular_buf_reset	16	static
+ring_buffer.c:46:6:circular_buf_free	16	static
+ring_buffer.c:52:6:circular_buf_full	16	static
+ring_buffer.c:59:6:circular_buf_empty	16	static
+ring_buffer.c:66:8:circular_buf_capacity	16	static
+ring_buffer.c:73:8:circular_buf_size	24	static
+ring_buffer.c:94:13:advance_pointer	16	static
+ring_buffer.c:107:13:retreat_pointer	16	static
+ring_buffer.c:115:6:circular_buf_put	16	static
+ring_buffer.c:124:5:circular_buf_put2	24	static
+ring_buffer.c:140:5:circular_buf_get	24	static

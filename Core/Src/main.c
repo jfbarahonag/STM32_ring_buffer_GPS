@@ -61,6 +61,50 @@ static void MX_USART2_UART_Init(void);
 
 /* Private user code ---------------------------------------------------------*/
 /* USER CODE BEGIN 0 */
+/* INTERRUPT CALLBACKS */
+uint8_t buffer_test[5];
+void HAL_UART_RxCpltCallback(UART_HandleTypeDef *huart)
+{
+	/* Tested OK */
+	/*
+	if (huart->Instance == USART2) {
+		HAL_GPIO_TogglePin(LED_GPIO_Port, LED_Pin);
+	}
+	*/
+}
+
+void HAL_UART_TxCpltCallback(UART_HandleTypeDef *huart)
+{
+	/* Tested OK */
+	/*
+	if (huart->Instance == USART2) {
+		HAL_GPIO_TogglePin(LED_GPIO_Port, LED_Pin);
+	}
+	*/
+
+}
+uint16_t time_ms = 0;
+void HAL_TIM_PeriodElapsedCallback(TIM_HandleTypeDef *htim)
+{
+	/* Tested OK */
+	/* HAL_TIM_Base_start_IT() must be called in main.c */
+	/*
+	if (htim->Instance == TIM2) {
+		time_ms++;
+		if (time_ms >= 1000) {
+			time_ms = 0;
+			HAL_GPIO_TogglePin(LED_GPIO_Port, LED_Pin);
+		}
+	}
+	*/
+}
+
+void HAL_GPIO_EXTI_Callback(uint16_t GPIO_Pin)
+{
+	/* Tested OK */
+  //HAL_GPIO_TogglePin(LED_GPIO_Port, LED_Pin);
+}
+
 
 /* USER CODE END 0 */
 
@@ -96,7 +140,9 @@ int main(void)
   MX_USART1_UART_Init();
   MX_USART2_UART_Init();
   /* USER CODE BEGIN 2 */
-
+  HAL_TIM_Base_Start_IT(&htim2);
+  HAL_UART_Transmit_IT(&huart2, (uint8_t *)"1", 1);
+  HAL_UART_Receive_IT(&huart2, buffer_test, sizeof(buffer_test)-1);
   /* USER CODE END 2 */
 
   /* Infinite loop */
@@ -293,7 +339,7 @@ static void MX_GPIO_Init(void)
 
   /*Configure GPIO pin : BUTTON_Pin */
   GPIO_InitStruct.Pin = BUTTON_Pin;
-  GPIO_InitStruct.Mode = GPIO_MODE_IT_RISING;
+  GPIO_InitStruct.Mode = GPIO_MODE_IT_FALLING;
   GPIO_InitStruct.Pull = GPIO_NOPULL;
   HAL_GPIO_Init(BUTTON_GPIO_Port, &GPIO_InitStruct);
 
