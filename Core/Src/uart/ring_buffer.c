@@ -18,7 +18,7 @@ struct ring_buf_t {
 	bool full;
 };
 
-cbuf_handle_t circular_buf_init(uint8_t* buffer, size_t size)
+cbuf_handle_t ring_buf_init(uint8_t* buffer, size_t size)
 {
 	assert(buffer && size);
 
@@ -27,7 +27,7 @@ cbuf_handle_t circular_buf_init(uint8_t* buffer, size_t size)
 
 	cbuf->buffer = buffer;
 	cbuf->max = size;
-	ring_buf_empty(cbuf);
+	ring_buf_reset(cbuf);
 
 	assert(ring_buf_empty(cbuf));
 

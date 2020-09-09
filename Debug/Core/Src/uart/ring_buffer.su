@@ -1,4 +1,4 @@
-ring_buffer.c:21:15:circular_buf_init	24	static
+ring_buffer.c:21:15:ring_buf_init	24	static
 ring_buffer.c:37:6:ring_buf_reset	16	static
 ring_buffer.c:46:6:ring_buf_free	16	static
 ring_buffer.c:52:6:ring_buf_full	16	static

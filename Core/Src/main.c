@@ -27,11 +27,11 @@
 
 /* Private typedef -----------------------------------------------------------*/
 /* USER CODE BEGIN PTD */
-cbuf_handle_t ring_buffer;
 /* USER CODE END PTD */
 
 /* Private define ------------------------------------------------------------*/
 /* USER CODE BEGIN PD */
+#define BUFFER_SIZE		(500)
 /* USER CODE END PD */
 
 /* Private macro -------------------------------------------------------------*/
@@ -47,6 +47,12 @@ UART_HandleTypeDef huart2;
 
 /* USER CODE BEGIN PV */
 
+/* ring buffers handlers */
+cbuf_handle_t ring_buffer_rx;
+cbuf_handle_t ring_buffer_tx;
+/* physical buffers */
+uint8_t comm_rx_buffer[BUFFER_SIZE];
+uint8_t comm_tx_buffer[BUFFER_SIZE];
 /* USER CODE END PV */
 
 /* Private function prototypes -----------------------------------------------*/
@@ -62,15 +68,15 @@ static void MX_USART2_UART_Init(void);
 /* Private user code ---------------------------------------------------------*/
 /* USER CODE BEGIN 0 */
 /* INTERRUPT CALLBACKS */
-uint8_t buffer_test[5];
+uint8_t rx_data_byte;
+uint8_t tx_data_byte;
 void HAL_UART_RxCpltCallback(UART_HandleTypeDef *huart)
 {
+	HAL_UART_Receive_IT(&huart2, &rx_data_byte, 1);
 	/* Tested OK */
-	/*
 	if (huart->Instance == USART2) {
-		HAL_GPIO_TogglePin(LED_GPIO_Port, LED_Pin);
+		ring_buf_put(ring_buffer_rx, rx_data_byte);
 	}
-	*/
 }
 
 void HAL_UART_TxCpltCallback(UART_HandleTypeDef *huart)
@@ -88,7 +94,7 @@ void HAL_TIM_PeriodElapsedCallback(TIM_HandleTypeDef *htim)
 {
 	/* Tested OK */
 	/* HAL_TIM_Base_start_IT() must be called in main.c */
-	/*
+
 	if (htim->Instance == TIM2) {
 		time_ms++;
 		if (time_ms >= 1000) {
@@ -96,7 +102,7 @@ void HAL_TIM_PeriodElapsedCallback(TIM_HandleTypeDef *htim)
 			HAL_GPIO_TogglePin(LED_GPIO_Port, LED_Pin);
 		}
 	}
-	*/
+
 }
 
 void HAL_GPIO_EXTI_Callback(uint16_t GPIO_Pin)
@@ -140,15 +146,22 @@ int main(void)
   MX_USART1_UART_Init();
   MX_USART2_UART_Init();
   /* USER CODE BEGIN 2 */
+  ring_buffer_rx = ring_buf_init(comm_rx_buffer, BUFFER_SIZE);
+  ring_buffer_tx = ring_buf_init(comm_tx_buffer, BUFFER_SIZE);
+
   HAL_TIM_Base_Start_IT(&htim2);
-  HAL_UART_Transmit_IT(&huart2, (uint8_t *)"1", 1);
-  HAL_UART_Receive_IT(&huart2, buffer_test, sizeof(buffer_test)-1);
+  HAL_UART_Receive_IT(&huart2, &rx_data_byte, 1);
   /* USER CODE END 2 */
 
   /* Infinite loop */
   /* USER CODE BEGIN WHILE */
   while (1)
   {
+	  size_t size_rx = ring_buf_size(ring_buffer_rx);
+	  if( size_rx != 0) {
+		  ring_buf_get(ring_buffer_rx, &rx_data_byte);
+		  ring_buf_put(ring_buffer_tx, tx_data_byte);
+	  }
     /* USER CODE END WHILE */
 
     /* USER CODE BEGIN 3 */

@@ -1324,7 +1324,7 @@ HAL_StatusTypeDef HAL_UART_Receive_IT(UART_HandleTypeDef *huart, uint8_t *pData,
       return HAL_ERROR;
     }
 
-    __HAL_LOCK(huart);
+    //__HAL_LOCK(huart);
 
     huart->pRxBuffPtr  = pData;
     huart->RxXferSize  = Size;
@@ -1388,7 +1388,7 @@ HAL_StatusTypeDef HAL_UART_Receive_IT(UART_HandleTypeDef *huart, uint8_t *pData,
       huart->RxISR = UART_RxISR_8BIT;
     }
 
-    __HAL_UNLOCK(huart);
+    //__HAL_UNLOCK(huart);
 
     /* Enable the UART Parity Error interrupt and Data Register Not Empty interrupt */
     SET_BIT(huart->Instance->CR1, USART_CR1_PEIE | USART_CR1_RXNEIE);
