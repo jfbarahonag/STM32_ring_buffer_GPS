@@ -5,7 +5,6 @@
  *      Author: felipebg
  */
 #include <stdlib.h>
-#include <assert.h>
 
 #include "uart/ring_buffer.h"
 
@@ -136,4 +135,9 @@ int ring_buf_get(cbuf_handle_t cbuf, uint8_t * data)
     }
 
     return r;
+}
+
+size_t ring_buf_free_space(cbuf_handle_t cbuf)
+{
+	return cbuf->max - ring_buf_size(cbuf);
 }

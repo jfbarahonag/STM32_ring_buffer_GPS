@@ -11,6 +11,7 @@
 #include <stdint.h>
 #include <stddef.h>
 #include <stdbool.h>
+#include <assert.h>
 
 // Opaque circular buffer structure
 typedef struct ring_buf_t ring_buf_t;
@@ -48,5 +49,8 @@ size_t ring_buf_capacity(cbuf_handle_t cbuf);
 
 /// Returns the current number of elements in the buffer
 size_t ring_buf_size(cbuf_handle_t cbuf);
+
+/// Returns the number of free space in the buffer
+size_t ring_buf_free_space(cbuf_handle_t cbuf);
 
 #endif /* INC_UART_RING_BUFFER_H_ */

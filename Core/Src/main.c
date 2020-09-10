@@ -22,7 +22,8 @@
 
 /* Private includes ----------------------------------------------------------*/
 /* USER CODE BEGIN Includes */
-#include "uart/ring_buffer.h"
+#include "uart/uart_driver.h"
+#include <string.h>
 /* USER CODE END Includes */
 
 /* Private typedef -----------------------------------------------------------*/
@@ -75,7 +76,7 @@ void HAL_UART_RxCpltCallback(UART_HandleTypeDef *huart)
 	HAL_UART_Receive_IT(&huart2, &rx_data_byte, 1);
 	/* Tested OK */
 	if (huart->Instance == USART2) {
-		ring_buf_put(ring_buffer_rx, rx_data_byte);
+		uart_write(ring_buffer_rx, &rx_data_byte, 1);
 	}
 }
 
@@ -157,10 +158,10 @@ int main(void)
   /* USER CODE BEGIN WHILE */
   while (1)
   {
-	  size_t size_rx = ring_buf_size(ring_buffer_rx);
-	  if( size_rx != 0) {
-		  ring_buf_get(ring_buffer_rx, &rx_data_byte);
-		  ring_buf_put(ring_buffer_tx, tx_data_byte);
+	  size_t size_buf = ring_buf_size(ring_buffer_rx);
+	  if(size_buf == 3) {
+		  uart_read(ring_buffer_rx, comm_tx_buffer, size_buf);
+			  HAL_UART_Transmit(&huart2, comm_tx_buffer, size_buf, 1000);
 	  }
     /* USER CODE END WHILE */
 

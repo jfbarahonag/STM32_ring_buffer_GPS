@@ -1,0 +1,2 @@
+uart_driver.c:9:9:uart_write	32	static
+uart_driver.c:34:9:uart_read	32	static
