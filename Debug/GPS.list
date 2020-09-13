@@ -2508,34 +2508,34 @@ int ring_buf_get(cbuf_handle_t cbuf, uint8_t * data)
  80010e0:	4812      	ldr	r0, [pc, #72]	; (800112c <ring_buf_get+0x70>)
  80010e2:	f003 fbdb 	bl	800489c <__assert_func>
 
-    int r = -1;
- 80010e6:	f04f 33ff 	mov.w	r3, #4294967295	; 0xffffffff
- 80010ea:	60fb      	str	r3, [r7, #12]
+    int r = 0;
+ 80010e6:	2300      	movs	r3, #0
+ 80010e8:	60fb      	str	r3, [r7, #12]
 
     if(!ring_buf_empty(cbuf))
- 80010ec:	6878      	ldr	r0, [r7, #4]
- 80010ee:	f7ff fef7 	bl	8000ee0 <ring_buf_empty>
- 80010f2:	4603      	mov	r3, r0
- 80010f4:	f083 0301 	eor.w	r3, r3, #1
- 80010f8:	b2db      	uxtb	r3, r3
- 80010fa:	2b00      	cmp	r3, #0
- 80010fc:	d00c      	beq.n	8001118 <ring_buf_get+0x5c>
+ 80010ea:	6878      	ldr	r0, [r7, #4]
+ 80010ec:	f7ff fef8 	bl	8000ee0 <ring_buf_empty>
+ 80010f0:	4603      	mov	r3, r0
+ 80010f2:	f083 0301 	eor.w	r3, r3, #1
+ 80010f6:	b2db      	uxtb	r3, r3
+ 80010f8:	2b00      	cmp	r3, #0
+ 80010fa:	d00d      	beq.n	8001118 <ring_buf_get+0x5c>
     {
         *data = cbuf->buffer[cbuf->tail];
- 80010fe:	687b      	ldr	r3, [r7, #4]
- 8001100:	681a      	ldr	r2, [r3, #0]
- 8001102:	687b      	ldr	r3, [r7, #4]
- 8001104:	689b      	ldr	r3, [r3, #8]
- 8001106:	4413      	add	r3, r2
- 8001108:	781a      	ldrb	r2, [r3, #0]
- 800110a:	683b      	ldr	r3, [r7, #0]
- 800110c:	701a      	strb	r2, [r3, #0]
+ 80010fc:	687b      	ldr	r3, [r7, #4]
+ 80010fe:	681a      	ldr	r2, [r3, #0]
+ 8001100:	687b      	ldr	r3, [r7, #4]
+ 8001102:	689b      	ldr	r3, [r3, #8]
+ 8001104:	4413      	add	r3, r2
+ 8001106:	781a      	ldrb	r2, [r3, #0]
+ 8001108:	683b      	ldr	r3, [r7, #0]
+ 800110a:	701a      	strb	r2, [r3, #0]
         retreat_pointer(cbuf);
- 800110e:	6878      	ldr	r0, [r7, #4]
- 8001110:	f7ff ff86 	bl	8001020 <retreat_pointer>
+ 800110c:	6878      	ldr	r0, [r7, #4]
+ 800110e:	f7ff ff87 	bl	8001020 <retreat_pointer>
 
-        r = 0;
- 8001114:	2300      	movs	r3, #0
+        r = -1;
+ 8001112:	f04f 33ff 	mov.w	r3, #4294967295	; 0xffffffff
  8001116:	60fb      	str	r3, [r7, #12]
     }
 

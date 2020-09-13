@@ -124,14 +124,14 @@ int ring_buf_get(cbuf_handle_t cbuf, uint8_t * data)
 {
     assert(cbuf && data && cbuf->buffer);
 
-    int r = -1;
+    int r = 0;
 
     if(!ring_buf_empty(cbuf))
     {
         *data = cbuf->buffer[cbuf->tail];
         retreat_pointer(cbuf);
 
-        r = 0;
+        r = -1;
     }
 
     return r;
