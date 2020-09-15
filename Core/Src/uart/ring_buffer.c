@@ -141,3 +141,45 @@ size_t ring_buf_free_space(cbuf_handle_t cbuf)
 {
 	return cbuf->max - ring_buf_size(cbuf);
 }
+
+buffer_state_t ring_buf_write(cbuf_handle_t cbuf, uint8_t *data, size_t data_len)
+{
+	assert(cbuf);
+
+	if(ring_buf_full(cbuf))
+	{
+		return BUFFER_FULL;
+	}
+
+	if(ring_buf_free_space(cbuf) < data_len)
+	{
+		return BUFFER_NOT_ENOUGH_SPACE;
+	}
+
+	size_t data_counter = 0;
+
+	while (data_counter < data_len)
+	{
+		ring_buf_put(cbuf, data[data_counter++]);
+	}
+
+	return BUFFER_OK;
+
+}
+
+uint8_t ring_buf_read(cbuf_handle_t cbuf, uint8_t *data, size_t data_len)
+{
+	assert(cbuf && data);
+
+	size_t data_counter = 0;
+
+	while (data_counter < data_len)
+	{
+		if (!ring_buf_get(cbuf, &data[data_counter++]))
+		{
+			return 0;
+		}
+	}
+
+	return 1;
+}

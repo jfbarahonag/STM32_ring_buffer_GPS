@@ -13,6 +13,13 @@
 #include <stdbool.h>
 #include <assert.h>
 
+typedef enum
+{
+	BUFFER_OK,
+	BUFFER_FULL,
+	BUFFER_NOT_ENOUGH_SPACE
+}buffer_state_t;
+
 // Opaque circular buffer structure
 typedef struct ring_buf_t ring_buf_t;
 
@@ -52,5 +59,11 @@ size_t ring_buf_size(cbuf_handle_t cbuf);
 
 /// Returns the number of free space in the buffer
 size_t ring_buf_free_space(cbuf_handle_t cbuf);
+
+/// Write on buffer a certain amount of data
+buffer_state_t ring_buf_write(cbuf_handle_t cbuf, uint8_t *data, size_t data_len);
+
+/// Read a certain amount of data from buffer
+uint8_t ring_buf_read(cbuf_handle_t cbuf, uint8_t *data, size_t data_len);
 
 #endif /* INC_UART_RING_BUFFER_H_ */

@@ -76,7 +76,7 @@ void HAL_UART_RxCpltCallback(UART_HandleTypeDef *huart)
 	HAL_UART_Receive_IT(&huart2, &rx_data_byte, 1);
 	/* Tested OK */
 	if (huart->Instance == USART2) {
-		uart_write(ring_buffer_rx, &rx_data_byte, 1);
+		ring_buf_write(ring_buffer_rx, &rx_data_byte, 1);
 	}
 }
 
@@ -149,7 +149,6 @@ int main(void)
   /* USER CODE BEGIN 2 */
   ring_buffer_rx = ring_buf_init(comm_rx_buffer, BUFFER_SIZE);
   ring_buffer_tx = ring_buf_init(comm_tx_buffer, BUFFER_SIZE);
-
   HAL_TIM_Base_Start_IT(&htim2);
   HAL_UART_Receive_IT(&huart2, &rx_data_byte, 1);
   /* USER CODE END 2 */
@@ -160,7 +159,7 @@ int main(void)
   {
 	  size_t size_buf = ring_buf_size(ring_buffer_rx);
 	  if(size_buf == 3) {
-		  uart_read(ring_buffer_rx, comm_tx_buffer, size_buf);
+		  ring_buf_read(ring_buffer_rx, comm_tx_buffer, size_buf);
 			  HAL_UART_Transmit(&huart2, comm_tx_buffer, size_buf, 1000);
 	  }
     /* USER CODE END WHILE */

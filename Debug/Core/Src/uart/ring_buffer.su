@@ -10,3 +10,5 @@ ring_buffer.c:106:13:retreat_pointer	16	static
 ring_buffer.c:114:6:ring_buf_put	16	static
 ring_buffer.c:123:5:ring_buf_get	24	static
 ring_buffer.c:140:8:ring_buf_free_space	24	static
+ring_buffer.c:145:16:ring_buf_write	32	static
+ring_buffer.c:170:9:ring_buf_read	32	static

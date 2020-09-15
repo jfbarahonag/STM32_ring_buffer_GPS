@@ -5,46 +5,15 @@
  *      Author: felipebg
  */
 #include "uart/uart_driver.h"
+#include "stm32l4xx_hal.h"
 
-uint8_t uart_write(cbuf_handle_t cbuf, uint8_t *data, size_t data_len)
+void uart_write(cbuf_handle_t cbuf, uint8_t *data, size_t data_len)
 {
-	assert(cbuf);
-
-	if(ring_buf_full(cbuf))
-	{
-		return 1;
-	}
-
-	if(ring_buf_free_space(cbuf) < data_len)
-	{
-		return 2;
-	}
-
-	size_t data_counter = 0;
-
-	while (data_counter < data_len)
-	{
-		ring_buf_put(cbuf, data[data_counter++]);
-	}
-
-	return 0;
-
+	//if (ring_buf_write(cbuf, data, data_len) == )
 }
 
-uint8_t uart_read(cbuf_handle_t cbuf, uint8_t *data, size_t data_len)
+void uart_read(cbuf_handle_t cbuf, uint8_t *data, size_t data_len)
 {
-	assert(cbuf && data);
-
-	size_t data_counter = 0;
-
-	while (data_counter < data_len)
-	{
-		if (!ring_buf_get(cbuf, &data[data_counter++]))
-		{
-			return 0;
-		}
-	}
-
-	return 1;
+	ring_buf_read(cbuf, data, data_len);
 }
 

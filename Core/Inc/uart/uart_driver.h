@@ -10,7 +10,7 @@
 
 #include "ring_buffer.h"
 
-uint8_t uart_write(cbuf_handle_t cbuf, uint8_t *data, size_t data_len);
-uint8_t uart_read(cbuf_handle_t cbuf, uint8_t *data, size_t data_len);
+void uart_write(cbuf_handle_t cbuf, uint8_t *data, size_t data_len);
+void uart_read(cbuf_handle_t cbuf, uint8_t *data, size_t data_len);
 
 #endif /* INC_UART_UART_DRIVER_H_ */
